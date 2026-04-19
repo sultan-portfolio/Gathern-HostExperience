@@ -3,129 +3,149 @@
 <head>
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
-    <title>SULTAN // GATHERN_HOST_INTELLIGENCE_v1.0</title>
-    <link href="https://fonts.googleapis.com/css2?family=Bebas+Neue&family=Space+Mono:wght@400;700&family=Space+Grotesk:wght@300;500;700&display=swap" rel="stylesheet">
+    <title>Gathern Host Experience | Neural Audit</title>
+    <link href="https://fonts.googleapis.com/css2?family=Bebas+Neue&family=Space+Mono:wght@400;700&family=Montserrat:wght@300;400;600;700&family=Tajawal:wght@400;700&display=swap" rel="stylesheet">
     <style>
         :root {
-            --bg: #020205; --bg2: #080C18;
-            --p: #00A3FF; /* Gathern Blue Vibe */
-            --pl: #70CFFF; --pg: rgba(0, 163, 255, 0.1);
-            --c: #00FFC2; /* Action Green */
-            --w: #F0F4FF; --wd: rgba(240, 244, 255, 0.4);
-            --border: rgba(0, 163, 255, 0.2);
-            --mono: 'Space Mono', monospace;
-            --sans: 'Space Grotesk', sans-serif;
-            --bebas: 'Bebas Neue', sans-serif;
-            --glow: 0 0 15px rgba(0, 255, 194, 0.3);
+            --dk: #06020a; 
+            --p: #6C5CE7;      /* Vivid Purple */
+            --pd: #2d1b4d;     /* Deep Purple shadow */
+            --y: #D4AF37;      /* Royal Gold */
+            --yl: #FADA5E;     /* Bright Gold */
+            --w: #FFFFFF; 
+            --wd: rgba(240, 244, 255, 0.45);
+            --border: rgba(212, 175, 55, 0.15);
+            --glow: 0 0 20px rgba(212, 175, 55, 0.2);
         }
 
         * { margin: 0; padding: 0; box-sizing: border-box; cursor: crosshair; }
-        body { background-color: var(--bg); color: var(--w); font-family: var(--sans); overflow-x: hidden; }
+        
+        body {
+            background-color: var(--dk);
+            color: var(--w);
+            font-family: 'Montserrat', sans-serif;
+            overflow-x: hidden;
+            line-height: 1.6;
+        }
 
-        /* CRT SCANLINES */
+        /* CRT SCANLINES EFFECT */
         body::before {
-            content: " "; position: fixed; inset: 0; z-index: 999; pointer-events: none; opacity: 0.5;
+            content: " "; position: fixed; inset: 0; z-index: 999; pointer-events: none; opacity: 0.4;
             background: linear-gradient(rgba(18, 16, 16, 0) 50%, rgba(0, 0, 0, 0.25) 50%), 
-                        linear-gradient(90deg, rgba(255, 0, 0, 0.01), rgba(0, 255, 0, 0.01), rgba(0, 0, 255, 0.01));
+                        linear-gradient(90deg, rgba(138, 43, 226, 0.02), rgba(212, 175, 55, 0.01), rgba(138, 43, 226, 0.02));
             background-size: 100% 4px, 3px 100%;
         }
 
-        #net-canvas { position: fixed; inset: 0; z-index: 0; opacity: 0.25; pointer-events: none; }
-        #prog { position: fixed; top: 0; left: 0; height: 3px; background: linear-gradient(90deg, var(--p), var(--c)); z-index: 9999; width: 0%; box-shadow: var(--glow); }
+        #net-canvas { position: fixed; inset: 0; z-index: 0; opacity: 0.35; pointer-events: none; }
+        #prog { position: fixed; top: 0; left: 0; height: 3px; background: linear-gradient(90deg, var(--p), var(--y)); z-index: 9999; width: 0%; box-shadow: 0 0 15px var(--y); }
 
-        /* OS BAR */
+        /* LIVE STATUS BAR */
         .sbar {
-            position: fixed; top: 0; left: 0; right: 0; z-index: 1000;
-            background: rgba(2, 2, 5, 0.98); border-bottom: 1px solid var(--border);
-            padding: 10px 6%; display: flex; justify-content: space-between; align-items: center;
-            font-family: var(--mono); font-size: 0.52rem; color: var(--wd); letter-spacing: 1px;
+            position: fixed; top: 0; left: 0; right: 0; z-index: 1001;
+            background: rgba(6, 2, 10, 0.96); border-bottom: 1px solid var(--border);
+            padding: 8px 6vw; display: flex; justify-content: space-between; align-items: center;
+            font-family: 'Space Mono', monospace; font-size: 0.55rem; color: var(--wd); letter-spacing: 1px;
         }
-        .dot { width: 7px; height: 7px; border-radius: 50%; display: inline-block; margin-right: 6px; background: var(--c); box-shadow: 0 0 6px var(--c); animation: blink 1.5s infinite; }
+        .dot { width: 7px; height: 7px; background: #2ecc71; border-radius: 50%; display: inline-block; margin-right: 8px; animation: blink 1.5s infinite; box-shadow: 0 0 8px #2ecc71; }
 
+        /* NAV */
         nav {
-            position: fixed; top: 38px; width: 100%; z-index: 100; padding: 25px 6%;
-            display: flex; justify-content: space-between; align-items: center;
-            background: linear-gradient(to bottom, var(--bg), transparent); backdrop-filter: blur(8px);
+            position: fixed; top: 32px; left: 0; right: 0; z-index: 100; padding: 22px 6vw; display: flex; justify-content: space-between; align-items: center;
+            background: linear-gradient(to bottom, var(--dk), transparent); backdrop-filter: blur(10px); transition: all .3s;
         }
-        .nlogo { font-family: var(--mono); font-size: 1rem; font-weight: 700; color: var(--w); text-decoration: none; }
-        .nbadge { border: 1px solid var(--p); color: var(--p); padding: 5px 14px; font-size: 0.46rem; font-family: var(--mono); text-transform: uppercase; background: var(--pg); }
+        .nlogo { font-family: 'Bebas Neue', sans-serif; font-size: 1.8rem; letter-spacing: .12em; color: var(--w); text-decoration: none; }
+        .nlogo span { color: var(--y); text-shadow: var(--glow); }
+        .nbadge { border: 1px solid var(--y); color: var(--y); padding: 5px 14px; font-size: 0.5rem; font-family: 'Space Mono'; text-transform: uppercase; letter-spacing: 2px; }
 
         /* HERO */
-        .hero { min-height: 100vh; display: flex; flex-direction: column; justify-content: center; padding: 160px 8% 80px; position: relative; z-index: 2; }
-        .hh1 { font-family: var(--bebas); font-size: clamp(3.5rem, 13vw, 10.5rem); line-height: 0.85; margin-bottom: 25px; letter-spacing: -2px; }
-        .hh1 .pp { color: var(--p); text-shadow: 0 0 35px rgba(0, 163, 255, 0.35); }
-        .hh1 .cc { color: var(--c); text-shadow: var(--glow); }
+        .hero { min-height: 100vh; display: flex; flex-direction: column; justify-content: center; padding: 150px 6vw 80px; position: relative; overflow: hidden; z-index: 1; }
         
-        .glitch-target:hover { animation: intense-glitch 0.15s infinite; text-shadow: 2px 0 red, -2px 0 blue; cursor: pointer; }
-        @keyframes intense-glitch { 0% { transform: translate(1px, 1px); } 50% { transform: translate(-1px, -1px); } 100% { transform: translate(0); } }
+        /* Sun Glow & Horizon */
+        .hero-sun {
+            position: absolute; bottom: -25%; left: 50%; transform: translateX(-50%); width: 1200px; height: 700px; border-radius: 50%;
+            background: radial-gradient(ellipse, rgba(212, 175, 55, 0.12) 0%, rgba(108, 92, 231, 0.08) 40%, transparent 75%);
+            pointer-events: none; animation: sunrise 10s ease-in-out infinite alternate;
+        }
+        @keyframes sunrise { 0% { opacity: .4; transform: translateX(-50%) scale(1); } 100% { opacity: 1; transform: translateX(-50%) scale(1.08); } }
+        .hero-horizon { position: absolute; bottom: 22%; left: 0; right: 0; height: 1px; background: linear-gradient(90deg, transparent, rgba(212, 175, 55, 0.25) 50%, transparent); pointer-events: none; }
+        
+        .hc { position: relative; z-index: 3; max-width: 950px; }
+        .heye { font-family: 'Space Mono', monospace; font-size: .65rem; letter-spacing: .3em; text-transform: uppercase; color: var(--yl); margin-bottom: 25px; display: flex; align-items: center; gap: 15px; opacity: 0; animation: fup .7s .1s forwards; }
+        .heye::after { content: ''; width: 50px; height: 1px; background: var(--y); }
+        
+        .hname { font-family: 'Bebas Neue', sans-serif; font-size: clamp(3.5rem, 9vw, 9rem); line-height: 0.85; margin-bottom: 20px; color: var(--w); opacity: 0; animation: fup .8s .25s forwards; letter-spacing: -2px; }
+        .hname span { color: var(--y); text-shadow: 0 0 25px rgba(212, 175, 55, 0.4); }
+        
+        .hhook { font-size: clamp(1.1rem, 1.8vw, 1.5rem); font-weight: 300; color: var(--wd); line-height: 1.8; border-left: 3px solid var(--y); padding-left: 28px; margin-bottom: 40px; opacity: 0; animation: fup .7s .5s forwards; background: linear-gradient(90deg, rgba(212, 175, 55, 0.04), transparent); }
+        .hhook b { color: var(--w); font-weight: 700; }
+        .hhook .hi { color: var(--p); font-weight: 600; border-bottom: 1px solid var(--p); }
 
-        .hdesc { font-size: clamp(1rem, 2vw, 1.35rem); font-weight: 300; color: var(--wd); max-width: 820px; line-height: 1.75; margin-bottom: 45px; }
-        .hdesc b { color: var(--w); } .hdesc .hi { color: var(--p); border-bottom: 1px solid var(--p); }
-
-        /* ANALYTICS LOG BOX */
-        .outbox { background: rgba(0,0,0,0.6); border: 1px solid var(--border); padding: 22px; margin-bottom: 50px; font-family: var(--mono); border-left: 4px solid var(--p); max-width: 650px; }
-        .outbox-title { font-size: 0.45rem; color: var(--p); margin-bottom: 12px; letter-spacing: 2px; }
-        .typed-log { font-size: 0.78rem; color: #a1b0cf; line-height: 1.6; min-height: 3.5em; }
-        .tcursor { display: inline-block; width: 2px; height: 1em; background: var(--c); vertical-align: middle; animation: blink 0.7s step-end infinite; }
-
-        /* DATA TILES */
-        .hstats { display: grid; grid-template-columns: repeat(4, 1fr); gap: 2px; background: var(--border); margin-top: 20px; border: 1px solid var(--border); }
-        @media(max-width: 800px) { .hstats { grid-template-columns: 1fr 1fr; } }
-        .hstat { background: var(--bg); padding: 25px 22px; position: relative; overflow: hidden; }
-        .hstat-label { font-family: var(--mono); font-size: 0.42rem; color: var(--wd); text-transform: uppercase; margin-bottom: 10px; display: block; letter-spacing: 2px; }
-        .hstat-num { font-family: var(--bebas); font-size: 3rem; line-height: 1; color: var(--w); }
-        .hbar { height: 2px; background: rgba(255,255,255,0.05); margin-top: 15px; position: relative; overflow: hidden; }
-        .hbar-fill { position: absolute; top: 0; left: 0; height: 100%; background: linear-gradient(90deg, var(--p), var(--c)); width: 0%; transition: 2.5s cubic-bezier(0.19, 1, 0.22, 1); box-shadow: var(--glow); }
+        /* DASHBOARD STATS */
+        .hstats { display: flex; gap: 0; margin-top: 50px; opacity: 0; animation: fup .7s .8s forwards; flex-wrap: wrap; background: rgba(0,0,0,0.3); border: 1px solid var(--border); width: fit-content; }
+        .hstat { padding: 25px 40px; border-right: 1px solid rgba(255,255,255,0.06); }
+        .hstat:last-child { border-right: none; }
+        .hstat-num { font-family: 'Bebas Neue', sans-serif; font-size: 3.5rem; line-height: 1; color: var(--w); }
+        .hstat-num span { color: var(--y); }
+        .hstat-label { font-family: 'Space Mono', monospace; font-size: .5rem; letter-spacing: .2em; text-transform: uppercase; color: var(--p); margin-top: 8px; font-weight: 700; }
 
         /* SECTIONS */
-        section { padding: 120px 8%; z-index: 2; position: relative; max-width: 1400px; margin: 0 auto; }
-        .s-label { font-family: var(--mono); font-size: 0.55rem; color: var(--p); margin-bottom: 50px; display: flex; align-items: center; gap: 15px; }
-        .s-label::after { content: ''; flex: 1; height: 1px; background: linear-gradient(90deg, var(--border), transparent); }
-        .stitle { font-family: var(--bebas); font-size: clamp(2.5rem, 6vw, 5.5rem); margin-bottom: 55px; letter-spacing: 1px; }
+        section:not(.hero) { padding: 120px 6vw; position: relative; z-index: 1; max-width: 1400px; margin: 0 auto; }
+        .slabel { font-family: 'Space Mono', monospace; font-size: .6rem; font-weight: 700; letter-spacing: .4em; text-transform: uppercase; color: var(--y); margin-bottom: 55px; display: flex; align-items: center; gap: 20px; }
+        .slabel::after { content: ''; flex: 1; height: 1px; background: linear-gradient(90deg, var(--border), transparent); }
+        .stitle { font-family: 'Bebas Neue', sans-serif; font-size: clamp(2.5rem, 6vw, 5.5rem); line-height: 1; margin-bottom: 40px; letter-spacing: 1px; }
 
-        /* CARDS */
-        .vgrid { display: grid; grid-template-columns: 1fr 1fr; gap: 30px; }
-        @media(max-width: 900px) { .vgrid { grid-template-columns: 1fr; } }
-        .vcard { 
-            background: rgba(10, 14, 26, 0.7); padding: 50px; border: 1px solid var(--border); 
-            position: relative; transition: 0.5s ease; backdrop-filter: blur(15px);
-            clip-path: polygon(0 0, 96% 0, 100% 4%, 100% 100%, 4% 100%, 0 96%);
+        /* PROBLEM CARDS - HARDWARE/AI STYLE */
+        .card-container { display: flex; flex-direction: column; gap: 45px; }
+        .cc { 
+            background: rgba(15, 5, 25, 0.7); border: 1px solid var(--border); border-bottom: 3px solid var(--pd); 
+            backdrop-filter: blur(15px); transition: 0.4s cubic-bezier(0.19, 1, 0.22, 1); position: relative; overflow: hidden;
+            clip-path: polygon(0 0, 97% 0, 100% 3%, 100% 100%, 3% 100%, 0 97%);
         }
-        .vcard:hover { border-color: var(--p); transform: translateY(-10px); }
-        .vcard:hover::before {
-            content: ''; position: absolute; inset: 0; border: 1px solid transparent; transition: 0.4s;
-            border-image: linear-gradient(135deg, var(--p) 15%, transparent 15%, transparent 85%, var(--c) 85%) 1;
-            box-shadow: inset 0 0 40px rgba(0, 163, 255, 0.05);
-        }
-        .vnum { font-family: var(--mono); font-size: 0.6rem; color: var(--p); margin-bottom: 18px; display: block; letter-spacing: 3px; }
-        .vtitle { font-size: 1.4rem; font-weight: 700; margin-bottom: 15px; color: var(--w); }
-        .vtext { font-size: 0.88rem; color: var(--wd); line-height: 1.85; }
+        .cc:hover { border-bottom-color: var(--y); transform: translateY(-8px); background: rgba(20, 10, 35, 0.9); }
+        .cc:hover::before { content: ''; position: absolute; inset: 0; border: 1px solid var(--y); opacity: 0.3; pointer-events: none; }
+        
+        .ch { padding: 35px 45px; display: flex; justify-content: space-between; align-items: center; border-bottom: 1px solid rgba(255,255,255,0.04); }
+        .ct { font-family: 'Bebas Neue', sans-serif; font-size: clamp(1.6rem, 2.5vw, 2.2rem); color: var(--w); letter-spacing: 0.05em; }
+        .cn { font-family: 'Bebas Neue', sans-serif; font-size: 2.8rem; color: var(--p); opacity: 0.5; }
+        
+        .cb { display: grid; grid-template-columns: 1.2fr 1fr 1fr; }
+        @media(max-width: 1100px) { .cb { grid-template-columns: 1fr; } }
+        
+        .cl { padding: 45px; border-right: 1px solid rgba(255,255,255,0.05); }
+        .cl:last-child { border-right: none; background: linear-gradient(180deg, rgba(108, 92, 231, 0.03), transparent); }
+        @media(max-width: 1100px) { .cl { border-right: none; border-bottom: 1px solid rgba(255,255,255,0.05); } }
+        
+        .clabel { font-family: 'Space Mono', monospace; font-size: .55rem; letter-spacing: .3em; color: var(--y); font-weight: 700; text-transform: uppercase; margin-bottom: 25px; display: block; }
+        .ctxt { font-size: .9rem; color: var(--wd); line-height: 1.85; font-weight: 300; margin-bottom: 20px; }
+        .ctxt b { color: var(--w); font-weight: 600; }
 
-        /* PROOF DATA */
-        .pgrid { display: flex; flex-direction: column; gap: 2px; background: var(--border); border: 1px solid var(--border); }
-        .prow { 
-            background: var(--bg); display: grid; grid-template-columns: 180px 1fr 1fr; gap: 0; padding: 40px; 
-            border-left: 4px solid var(--p); transition: 0.3s;
-        }
-        .prow:hover { border-left-color: var(--c); background: rgba(0, 163, 255, 0.02); }
-        @media(max-width: 1000px) { .prow { grid-template-columns: 1fr; gap: 25px; } }
-        .pnum-col { border-right: 1px solid rgba(255,255,255,0.06); padding-right: 30px; display: flex; flex-direction: column; justify-content: center; }
-        .pbig { font-family: var(--mono); font-size: 2.8rem; font-weight: 700; color: var(--p); line-height: 1; }
-        .pctx { padding: 0 40px; border-right: 1px solid rgba(255,255,255,0.06); }
-        .pctx:last-child { border-right: none; }
-        .pco { font-family: var(--mono); font-size: 0.5rem; color: var(--p); margin-bottom: 12px; text-transform: uppercase; }
-        .pdesc { font-size: 0.82rem; color: var(--wd); line-height: 1.75; }
-        .pimp { font-family: var(--mono); font-size: 0.65rem; color: var(--c); font-weight: 700; margin-top: 15px; }
+        /* VOICE BOX - DYNAMIC */
+        .voice-box { background: rgba(108, 92, 231, 0.08); border-left: 4px solid var(--p); padding: 25px; margin-bottom: 25px; position: relative; }
+        .v-name { font-family: 'Space Mono', monospace; font-size: .6rem; font-weight: 700; color: var(--y); margin-bottom: 8px; text-transform: uppercase; }
+        .v-quote { font-family: 'Tajawal', sans-serif; font-size: 1.15rem; line-height: 1.7; color: var(--w); }
 
-        /* FINAL MISSION */
-        .qbox { background: rgba(0,0,0,0.85); border: 1px solid var(--border); border-left: 5px solid var(--p); padding: 70px; text-align: center; margin-top: 80px; position: relative; }
-        .qtext { font-family: var(--mono); font-size: clamp(1rem, 1.5vw, 1.25rem); color: var(--w); min-height: 4em; line-height: 1.8; }
+        /* ACTIONS */
+        .action-list { list-style: none; }
+        .action-list li { font-size: .85rem; color: var(--wd); margin-bottom: 18px; display: flex; gap: 12px; }
+        .action-list li::before { content: '▸'; color: var(--y); font-weight: 700; }
 
-        footer { padding: 120px 8% 60px; background: #000; border-top: 1px solid var(--border); }
-        .f-info { font-family: var(--mono); font-size: 0.85rem; color: var(--wd); line-height: 2.4; display: grid; grid-template-columns: 1fr 1fr; gap: 20px; }
+        /* FINAL MISSION BOX */
+        .qbox { background: rgba(0,0,0,0.85); border: 1px solid var(--border); border-left: 5px solid var(--y); padding: 75px; text-align: center; margin-top: 80px; position: relative; }
+        .qbox::before { content: 'SYSTEM_SUMMARY'; position: absolute; top: 10px; left: 20px; font-family: 'Space Mono'; font-size: 0.5rem; color: var(--p); opacity: 0.5; }
+        .qtext { font-family: 'Space Mono', monospace; font-size: clamp(1.1rem, 2vw, 1.4rem); color: var(--w); line-height: 1.8; min-height: 4em; }
+        .hl { color: var(--y); font-weight: 700; text-shadow: 0 0 10px rgba(212, 175, 55, 0.3); }
+
+        footer { border-top: 1px solid var(--border); padding: 80px 6vw; text-align: center; background: #000; position: relative; z-index: 1; }
+        .f-name { font-family: 'Bebas Neue', sans-serif; font-size: 3rem; color: var(--w); letter-spacing: 2px; }
+        .f-contact { font-family: 'Space Mono', monospace; font-size: .85rem; color: var(--wd); margin-top: 20px; }
+        .f-contact a { color: var(--y); text-decoration: none; border-bottom: 1px solid var(--y); }
+
+        .rv { opacity: 0; transform: translateY(40px); transition: 1s cubic-bezier(0.19, 1, 0.22, 1); }
+        .rv.on { opacity: 1; transform: translateY(0); }
+        @keyframes fup { from { opacity: 0; transform: translateY(25px); } to { opacity: 1; transform: translateY(0); } }
         @keyframes blink { 0%, 100% { opacity: 1; } 50% { opacity: 0; } }
         ::-webkit-scrollbar { width: 3px; }
-        ::-webkit-scrollbar-thumb { background: var(--p); }
+        ::-webkit-scrollbar-thumb { background: var(--y); }
     </style>
 </head>
 <body>
@@ -135,137 +155,167 @@
 
     <div class="sbar">
         <div class="sb-l">
-            <span><span class="dot"></span> HOST_OPS_KERNEL: ACTIVE</span>
+            <span><span class="dot"></span> FIELD_AUDIT: ACTIVE</span>
             <span style="margin: 0 15px; opacity: 0.1;">|</span>
-            <span>AUDIT_v1.43955</span>
+            <span>DATA_NODES: 43,955</span>
             <span style="margin: 0 15px; opacity: 0.1;">|</span>
-            <span style="color:var(--p)">SULTAN_ALQAHTANI</span>
+            <span style="color:var(--y)">SULTAN_ALQAHTANI // CCXP®</span>
         </div>
         <div id="clock">AST 00:00:00</div>
     </div>
 
-    <nav>
-        <a href="#" class="nlogo">~/GATHERN<span style="color:var(--p)">.OPS</span></a>
-        <div class="nbadge">FIELD_AUDIT_EXPERT</div>
+    <nav id="nav">
+        <a href="#" class="nlogo">GATHERN<span>.</span>CX</a>
+        <div class="nbadge">Neural Intelligence</div>
     </nav>
 
     <header class="hero">
-        <h1 class="hh1">
-            GATHERN HOST<br>
-            <span class="pp">COMMUNITY.</span><br>
-            <span class="cc glitch-target" data-text="DECODED.">DECODED.</span>
-        </h1>
-        <p class="hdesc">
-            Instead of a cover letter, I spent 48 hours inside your largest host community. <span class="hi">43,955 messages analyzed.</span> Four structural failures. Documented and solved.
-        </p>
+        <div class="hero-sun"></div>
+        <div class="hero-horizon"></div>
+        
+        <div class="hc">
+            <div class="heye">Field Intelligence Report</div>
+            <h1 class="hname">THE FOUR SILENT<br>THREATS TO <span>RETENTION</span></h1>
+            
+            <p class="hhook">
+                Instead of a cover letter, I spent 48 hours inside Gathern’s host community. <b>43,955 messages analyzed.</b> What I found was a pattern — four structural failures quietly eroding <span class="hi">host loyalty</span> on a platform that cannot afford to lose its supply side.
+            </p>
 
-        <div class="outbox">
-            <div class="outbox-title">// SCRAPING_TELEGRAM_DATA_STREAM</div>
-            <div class="typed-log" id="hero-log"></div><span class="tcursor"></span>
-        </div>
-
-        <div class="hstats rv">
-            <div class="hstat">
-                <span class="hstat-label">Messages Analyzed</span>
-                <div class="hstat-num"><span>43,955</span></div>
-                <div class="hbar"><div class="hbar-fill" data-w="100"></div></div>
-            </div>
-            <div class="hstat">
-                <span class="hstat-label">Structural Failures</span>
-                <div class="hstat-num"><span>04</span></div>
-                <div class="hbar"><div class="hbar-fill" data-w="85"></div></div>
-            </div>
-            <div class="hstat">
-                <span class="hstat-label">Time in Field</span>
-                <div class="hstat-num"><span>48</span>H</div>
-                <div class="hbar"><div class="hbar-fill" data-w="60"></div></div>
-            </div>
-            <div class="hstat">
-                <span class="hstat-label">High-Agency Mode</span>
-                <div class="hstat-num">ON</div>
-                <div class="hbar"><div class="hbar-fill" data-w="99"></div></div>
+            <div class="hstats">
+                <div class="hstat">
+                    <div class="hstat-num"><span class="counter" data-target="43955">0</span></div>
+                    <div class="hstat-label">Messages Scanned</div>
+                </div>
+                <div class="hstat">
+                    <div class="hstat-num"><span class="counter" data-target="4">0</span></div>
+                    <div class="hstat-label">Critical Failures</div>
+                </div>
+                <div class="hstat">
+                    <div class="hstat-num"><span class="counter" data-target="48">0</span><span>H</span></div>
+                    <div class="hstat-label">Active Audit Time</div>
+                </div>
             </div>
         </div>
     </header>
 
     <section id="audit">
-        <div class="s-label">> LOAD_FIELD_INSIGHTS.OBJ</div>
-        <h2 class="stitle">THE <span style="color:var(--p)">AUDIT RESULTS.</span></h2>
+        <div class="slabel rv">Strategic Breakdown</div>
+        <h2 class="stitle rv">STRUCTURAL FAILURES & <span style="color:var(--p)">INTERVENTIONS</span></h2>
         
-        <div class="vgrid">
-            <div class="vcard rv">
-                <span class="vnum">[ISSUE_01 // TRUST]</span>
-                <h3 class="vtitle">Host Friction Points</h3>
-                <p class="vtext">Analyzing 43k+ messages revealed that host churn isn't about the product, it's about the <b>operational feedback loop</b>. I've mapped the exact moments where hosts feel disconnected.</p>
+        <div class="card-container">
+            
+            <div class="cc rv">
+                <div class="ch"><div class="ct">P1 — THE BROKEN FEEDBACK LOOP</div><div class="cn">01</div></div>
+                <div class="cb">
+                    <div class="cl">
+                        <span class="clabel">Field Evidence</span>
+                        <div class="voice-box">
+                            <div class="v-name">Sarah · Elite Host</div>
+                            <div class="v-quote" dir="rtl">"كتبنا ملاحظاتنا مرة وثنتين وثلاث بس مافي تعديل."</div>
+                        </div>
+                        <p class="ctxt">This is a consistent pattern: hosts invest time in surveys and receive <b>zero visible action</b>. Gathern listens, but fails to respond.</p>
+                    </div>
+                    <div class="cl">
+                        <span class="clabel">CX Logic</span>
+                        <p class="ctxt">A system that collects without closing the loop is a <b>trust-destruction machine</b>. Host disengagement starts silently — lower units, less responsiveness, and fragile loyalty.</p>
+                    </div>
+                    <div class="cl">
+                        <span class="clabel">The Solution</span>
+                        <ul class="action-list">
+                            <li>Implement <b>Closed-Loop VoC</b> protocols as I did at Zid. Result: <b>−17% churn.</b></li>
+                            <li>Monthly <b>Host Action Report</b> showing exactly which inputs were reviews and why.</li>
+                        </ul>
+                    </div>
+                </div>
             </div>
-            <div class="vcard rv" style="transition-delay: 0.1s;">
-                <span class="vnum">[ISSUE_02 // SCALABILITY]</span>
-                <h3 class="vtitle">Community Defect Tracking</h3>
-                <p class="vtext">I identified 4 recurring structural failures in how host queries are handled. I have designed a <b>proactive defect-tracking playbook</b> to solve these at the root.</p>
-            </div>
-        </div>
-    </section>
 
-    <section id="proof">
-        <div class="s-label">> EXECUTE_CX_ENGINEERING.SH</div>
-        <h2 class="stitle">HOW I WORK <span class="cc">BEFORE HIRED.</span></h2>
-        <div class="pgrid rv">
-            <div class="prow">
-                <div class="pnum-col"><div class="pbig">43K</div><div class="plabel">DATA POINTS</div></div>
-                <div class="pctx"><div class="pco">@GATHERN // TELEGRAM_AUDIT</div><div class="pdesc">Scanned and analyzed every message to extract real host sentiment. No assumptions, just raw field data.</div></div>
-                <div class="pctx"><div class="pco">CX_TRANSLATION</div><div class="pdesc">I turn "Host Complaints" into "Operational Efficiency Gains". <b>→ Reducing supply-side churn.</b></div><div class="pimp">STATUS: SOLVED</div></div>
+            <div class="cc rv">
+                <div class="ch"><div class="ct">P2 — SUPPORT ABANDONMENT</div><div class="cn">02</div></div>
+                <div class="cb">
+                    <div class="cl">
+                        <span class="clabel">Field Evidence</span>
+                        <div class="voice-box">
+                            <div class="v-name">Abdullah · Admin</div>
+                            <div class="v-quote" dir="rtl">"الدعم ضعيف جداً في حال احتجت مساعدة أو حصلت لك مشكلة."</div>
+                        </div>
+                        <p class="ctxt">When the most experienced hosts warn about support, it’s a red flag. Automation is currently an <b>abandonment strategy</b> for emergencies.</p>
+                    </div>
+                    <div class="cl">
+                        <span class="clabel">CX Logic</span>
+                        <p class="ctxt">Hosts get bots during midnight emergencies (lockouts, plumbing). Every unresolved emergency becomes a story told to <b>43k members</b>.</p>
+                    </div>
+                    <div class="cl">
+                        <span class="clabel">The Solution</span>
+                        <ul class="action-list">
+                            <li><b>Tiered Support Model:</b> Automated triage with clear escalation paths to human agents.</li>
+                            <li><b>Priority Access</b> for High-Value Hosts (3+ units).</li>
+                        </ul>
+                    </div>
+                </div>
             </div>
-            <div class="prow">
-                <div class="pnum-col"><div class="pbig">99.3%</div><div class="plabel">SLA FOCUS</div></div>
-                <div class="pctx"><div class="pco">@AMAZON_ZID // OPS_EXP</div><div class="pdesc">7 years building CX operations for market leaders. I know how to scale host support without losing quality.</div></div>
-                <div class="pctx"><div class="pco">GATHERN_VALUE</div><div class="pdesc">Ensuring Gathern remains the most trusted platform for hosts in KSA. <b>→ Bulletproof supply growth.</b></div><div class="pimp">STATUS: READY</div></div>
-            </div>
-        </div>
-    </section>
 
-    <section id="plan">
-        <div class="s-label">> MISSION_DEPLOYMENT.LOG</div>
+            <div class="cc rv">
+                <div class="ch"><div class="ct">P3 — NO HOST PROTECTION</div><div class="cn">03</div></div>
+                <div class="cb">
+                    <div class="cl">
+                        <span class="clabel">Field Evidence</span>
+                        <div class="voice-box">
+                            <div class="v-name">Awwad · 12 Units</div>
+                            <div class="v-quote" dir="rtl">"قاذر إن يماطلون وممكن ما يشيلونه بالأخير (التقييم الظالم)."</div>
+                        </div>
+                    </div>
+                    <div class="cl">
+                        <span class="clabel">CX Logic</span>
+                        <p class="ctxt">Slow dispute processes signal that Gathern prioritizes guests over host fairness. This limits unit growth and pushes hosts to competitors.</p>
+                    </div>
+                    <div class="cl">
+                        <span class="clabel">The Solution</span>
+                        <ul class="action-list">
+                            <li>Time-bound review dispute protocol: Acknowledge in <b>24h</b>, resolve in <b>5 days</b>.</li>
+                            <li><b>Transparent Criteria</b> for removal — no more guessing.</li>
+                        </ul>
+                    </div>
+                </div>
+            </div>
+
+        </div>
+
         <div class="qbox rv">
-            <div class="qtext" id="final-log"></div><span class="tcursor"></span>
+            <div class="qtext" id="final-mission"></div><span class="tcursor"></span>
         </div>
     </section>
 
     <footer>
-        <div class="f-info">
-            <div>
-                > CCXP® Certified: TRUE<br>
-                > Mobile: +966 59 906 1969<br>
-                > Email: SultanFq.career@gmail.com
-            </div>
-            <div>
-                > This is how I work before I'm hired.<br>
-                > Ready to lead CX at Gathern.<br>
-                > [SYSTEM_STATUS: COMPLETED]
-            </div>
+        <h2 class="f-name">Sultan Alqahtani</h2>
+        <div class="f-contact">
+            CCXP® · Riyadh · <a href="mailto:sultanfq.career@gmail.com">sultanfq.career@gmail.com</a> · +966 59 906 1969
         </div>
     </footer>
 
     <script>
+        // System Clock Fix
         function updateClock() {
             const now = new Date();
             document.getElementById('clock').innerText = 'AST ' + now.toLocaleTimeString('en-GB', { hour12: false });
         }
         setInterval(updateClock, 1000); updateClock();
 
+        // Progress Bar
         window.onscroll = () => {
             let winScroll = document.documentElement.scrollTop;
             let height = document.documentElement.scrollHeight - document.documentElement.clientHeight;
             document.getElementById("prog").style.width = (winScroll / height) * 100 + "%";
         };
 
+        // Neural Net Canvas Logic
         const canvas = document.getElementById('net-canvas'), ctx = canvas.getContext('2d');
         let width, height, nodes = [];
         function initNet() {
             width = canvas.width = window.innerWidth; height = canvas.height = window.innerHeight;
-            nodes = []; for(let i=0; i<75; i++) nodes.push({x: Math.random()*width, y: Math.random()*height, vx: (Math.random()-0.5)*0.35, vy: (Math.random()-0.5)*0.35});
+            nodes = []; for(let i=0; i<85; i++) nodes.push({x: Math.random()*width, y: Math.random()*height, vx: (Math.random()-0.5)*0.35, vy: (Math.random()-0.5)*0.35});
         }
         function drawNet() {
-            ctx.clearRect(0,0,width,height); ctx.fillStyle = '#00FFC2'; ctx.strokeStyle = 'rgba(0, 163, 255, 0.08)';
+            ctx.clearRect(0,0,width,height); ctx.fillStyle = '#D4AF37'; ctx.strokeStyle = 'rgba(108, 92, 231, 0.1)';
             nodes.forEach((n, i) => {
                 n.x += n.vx; n.y += n.vy;
                 if(n.x<0 || n.x>width) n.vx *= -1; if(n.y<0 || n.y>height) n.vy *= -1;
@@ -279,45 +329,47 @@
         }
         initNet(); drawNet(); window.onresize = initNet;
 
-        const logLines = ["Scanning Telegram community... [OK]", "Processing 43,955 data points... [DONE]", "Status: High Agency Mode Activated.", "4 Structural Failures identified and solved."];
-        let lIdx = 0, cIdx = 0;
-        function typeLog() {
-            if(lIdx < logLines.length) {
-                let line = logLines[lIdx];
-                if(cIdx < line.length) {
-                    document.getElementById('hero-log').innerHTML += line.charAt(cIdx);
-                    cIdx++; setTimeout(typeLog, 25);
-                } else {
-                    document.getElementById('hero-log').innerHTML += "<br>";
-                    lIdx++; cIdx = 0; setTimeout(typeLog, 500);
+        // Counter Animation
+        const counterObserver = new IntersectionObserver((entries) => {
+            entries.forEach(entry => {
+                if(entry.isIntersecting) {
+                    const target = entry.target;
+                    const endVal = parseInt(target.dataset.target);
+                    let startVal = 0;
+                    const duration = 2000;
+                    const stepTime = Math.abs(Math.floor(duration / endVal)) || 20;
+                    const timer = setInterval(() => {
+                        startVal += Math.ceil(endVal / (duration / stepTime));
+                        if(startVal >= endVal) { target.innerText = endVal.toLocaleString(); clearInterval(timer); } 
+                        else { target.innerText = startVal.toLocaleString(); }
+                    }, stepTime);
+                    counterObserver.unobserve(target);
                 }
+            });
+        }, { threshold: 0.5 });
+        document.querySelectorAll('.counter').forEach(c => counterObserver.observe(c));
+
+        // Mission Typewriter
+        const missionText = "Gathern's hosts are loyal despite these problems — not because of the experience. These four failures are trust problems. And trust problems are CX problems. This is exactly what I fix.";
+        let mIdx = 0, mStarted = false;
+        function typeMission() {
+            if(mIdx < missionText.length) {
+                document.getElementById('final-mission').innerHTML += missionText.charAt(mIdx);
+                mIdx++; setTimeout(typeMission, 35);
             }
         }
-        setTimeout(typeLog, 1500);
 
-        const finalMsg = "Gathern is leading the KSA market. My job is to ensure the host experience matches that leadership—turning every مضيف into a lifelong partner.";
-        let fIdx = 0, fStarted = false;
-        function typeFinal() {
-            if(fIdx < finalMsg.length) {
-                document.getElementById('final-log').innerHTML += finalMsg.charAt(fIdx);
-                fIdx++; setTimeout(typeFinal, 35);
-            }
-        }
-
-        const observer = new IntersectionObserver(entries => {
+        const revealObserver = new IntersectionObserver(entries => {
             entries.forEach(entry => {
                 if(entry.isIntersecting) {
                     entry.target.classList.add('on');
-                    entry.target.querySelectorAll('.hbar-fill').forEach(bar => {
-                        bar.style.width = bar.getAttribute('data-w') + '%';
-                    });
-                    if(entry.target.classList.contains('qbox') && !fStarted) {
-                        fStarted = true; setTimeout(typeFinal, 500);
+                    if(entry.target.classList.contains('qbox') && !mStarted) {
+                        mStarted = true; setTimeout(typeMission, 500);
                     }
                 }
             });
         }, { threshold: 0.1 });
-        document.querySelectorAll('.rv, .qbox').forEach(el => observer.observe(el));
+        document.querySelectorAll('.rv, .qbox').forEach(el => revealObserver.observe(el));
     </script>
 </body>
 </html>
